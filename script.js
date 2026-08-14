@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
             
             submitButton.disabled = false;
-            submitButton.textContent = 'Submeter Dados';
+            submitButton.textContent = 'Marcar Presença';
         } else {
             throw new Error(result.message);
         }
@@ -36,7 +36,7 @@ form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     submitButton.disabled = true;
-    submitButton.textContent = 'Processando transação...';
+    submitButton.textContent = 'Processando...';
     statusDiv.textContent = '';
 
     const formData = new FormData(form);
@@ -52,7 +52,7 @@ form.addEventListener('submit', async (event) => {
         });
 
         if (response.ok) {
-            statusDiv.textContent = 'Estado atualizado. Operação concluída com sucesso.';
+            statusDiv.textContent = 'Cadastro concluído!';
             statusDiv.style.color = '#28a745';
             
             Array.from(selectPresente.options).forEach(option => {
@@ -66,10 +66,10 @@ form.addEventListener('submit', async (event) => {
             throw new Error('Falha de protocolo na comunicação com o servidor.');
         }
     } catch (error) {
-        statusDiv.textContent = 'Exceção não tratada na gravação dos dados.';
+        statusDiv.textContent = 'Erro! Exceção não tratada na gravação dos dados.';
         statusDiv.style.color = '#dc3545';
     } finally {
         submitButton.disabled = false;
-        submitButton.textContent = 'Submeter Dados';
+        submitButton.textContent = 'Marcar Presença';
     }
 });
