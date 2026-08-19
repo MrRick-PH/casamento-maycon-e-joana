@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
             
             submitButton.disabled = false;
-            submitButton.textContent = 'Marcar Presença';
+            submitButton.textContent = 'Confirmar Presença';
         } else {
             throw new Error(result.message);
         }
@@ -51,8 +51,10 @@ form.addEventListener('submit', async (event) => {
             }
         });
 
-        if (response.ok) {
-            statusDiv.textContent = 'Cadastro concluído!';
+        const result = await response.json();
+
+        if (response.ok && result.status === 'success') {
+            statusDiv.textContent = 'Presença Confirmada!';
             statusDiv.style.color = '#28a745';
             
             Array.from(selectPresente.options).forEach(option => {
@@ -63,13 +65,13 @@ form.addEventListener('submit', async (event) => {
             form.reset();
             selectPresente.value = "";
         } else {
-            throw new Error('Falha de protocolo na comunicação com o servidor.');
+            throw new Error(result.message || 'Falha de protocolo na comunicação com o servidor.');
         }
     } catch (error) {
-        statusDiv.textContent = 'Erro! Exceção não tratada na gravação dos dados.';
+        statusDiv.textContent = 'Erro! ' + error.message;
         statusDiv.style.color = '#dc3545';
     } finally {
         submitButton.disabled = false;
-        submitButton.textContent = 'Marcar Presença';
+        submitButton.textContent = 'Confirmar Presença';
     }
 });
