@@ -3,7 +3,7 @@ const statusDiv = document.getElementById('status');
 const selectPresente = document.getElementById('presente');
 const submitButton = document.getElementById('submit-btn');
 
-const ENDPOINT_URL = 'https://script.google.com/macros/s/AKfycbxLq7uoBtHAHFGJa4_Odv7d5GEwu2xe4jtN8heasL3O6VI7_Mhwj00l5Reko97uWj7ONw/exec';
+const ENDPOINT_URL = 'https://script.google.com/macros/s/AKfycbwhzAt5XO6nlEqGq6zWPUUvKqV4Z447JJxchdy682v9duFIxXoIqXpIsKsNvlSewXvE3g/exec';
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
@@ -37,7 +37,6 @@ form.addEventListener('submit', async (event) => {
 
     submitButton.disabled = true;
     submitButton.textContent = 'Processando...';
-    statusDiv.textContent = '';
 
     const formData = new FormData(form);
     const dataObject = Object.fromEntries(formData.entries());
@@ -54,8 +53,7 @@ form.addEventListener('submit', async (event) => {
         const result = await response.json();
 
         if (response.ok && result.status === 'success') {
-            statusDiv.textContent = 'Presença Confirmada!';
-            statusDiv.style.color = '#28a745';
+            alert('Presença Confirmada com sucesso!');
             
             Array.from(selectPresente.options).forEach(option => {
                 if (option.value === dataObject.presente) {
@@ -65,11 +63,10 @@ form.addEventListener('submit', async (event) => {
             form.reset();
             selectPresente.value = "";
         } else {
-            throw new Error(result.message || 'Falha de protocolo na comunicação com o servidor.');
+            throw new Error(result.message || 'Falha de conexão. Verifique o acesso à internet e repita a operação.');
         }
     } catch (error) {
-        statusDiv.textContent = 'Erro! ' + error.message;
-        statusDiv.style.color = '#dc3545';
+        alert(error.message);
     } finally {
         submitButton.disabled = false;
         submitButton.textContent = 'Confirmar Presença';
